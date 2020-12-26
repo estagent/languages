@@ -2,25 +2,22 @@
   "name": "@revgaming/languages",
   "author": "estagent <estagent@gmail.com>",
   "description": "js language function and container like laravel translate helper",
-  "keywords": ["javascript","config","laravel","language","I18n"],
-  "version": "1.0.1",
+  "keywords": [
+    "javascript",
+    "config",
+    "laravel",
+    "language",
+    "I18n"
+  ],
+  "version": "1.0.2",
   "homepage": "https://github.com/estagent/languages",
   "main": "src/index.js",
   "dependencies": {
-    "@revgaming/helpers": "file:../helpers",
-    "@revgaming/preference": "file:../preference",
+    "@revgaming/helpers": "^1.0.1",
+    "@revgaming/preference": "^1.0.1",
     "navigator-languages": "^2.0.2"
   },
   "devDependencies": {
-    "@babel/cli": "^7.12.10",
-    "@babel/core": "^7.12.10",
-    "@babel/node": "^7.12.10",
-    "@babel/preset-env": "^7.12.11",
-    "core-js": "^3.8.1",
-    "langs": "^2.0.0",
     "prettier": "^2.2.1"
-  },
-  "scripts": {
-    "build": "weback"
   }
 }
