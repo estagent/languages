@@ -1,7 +1,7 @@
-import variables from './variables';
+import collection from './collection';
 
 const mergeLanguage = (lang, key, data) => {
-    if (!variables.translations) throw 'translations not set';
+    if (!collection.translations) throw 'translations not set';
 
     if (!lang) throw 'lang must be  provided';
     if (typeof lang !== 'string') throw 'target must be object';
@@ -12,7 +12,7 @@ const mergeLanguage = (lang, key, data) => {
     if (!data) throw 'data must be  provided';
     if (typeof data !== 'object') throw 'data must be object';
 
-    const translations = variables.translations;
+    const translations = collection.translations;
 
     if (!translations.hasOwnProperty(lang)) translations[lang] = {};
 

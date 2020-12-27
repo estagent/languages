@@ -9,10 +9,11 @@
     "language",
     "I18n"
   ],
-  "version": "1.0.2",
+  "version": "1.0.4",
   "homepage": "https://github.com/estagent/languages",
   "main": "src/index.js",
   "dependencies": {
+    "@revgaming/config": "^1.0.1",
     "@revgaming/helpers": "^1.0.1",
     "@revgaming/preference": "^1.0.1",
     "navigator-languages": "^2.0.2"

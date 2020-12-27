@@ -2,7 +2,7 @@ import siblings from './data/siblings';
 import alternatives from './data/alternatives';
 
 export default {
-  locale: String,
+  default_priority: false,
   siblings: siblings,
   alternatives: alternatives,
   translations: {},

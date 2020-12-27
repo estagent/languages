@@ -1,17 +1,17 @@
 export default {
-  tr: {
-    tr: 'türkçe',
-    en: 'ingilizce',
-    ru: 'rusça',
-  },
-  en: {
-    tr: 'turkish',
-    en: 'english',
-    ru: 'russian',
-  },
-  ru: {
-    tr: 'турецкий',
-    en: 'английский',
-    ru: 'русский',
-  }
+    tr: {
+        tr: 'Türkçe',
+        en: 'İngilizce',
+        ru: 'Rusça',
+    },
+    en: {
+        tr: 'Turkish',
+        en: 'English',
+        ru: 'russian',
+    },
+    ru: {
+        tr: 'турецкий',
+        en: 'английский',
+        ru: 'русский',
+    },
 };

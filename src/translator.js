@@ -1,26 +1,30 @@
 import {replaceAttributes} from '@revgaming/helpers';
-import variables from './variables';
-import config from './config';
+import collection from './collection';
 
-const translateFallback = code => {
-    if (!variables.translations) throw 'translations not set';
-    const __fallback = variables.translations[config.fallback];
+const fromFallback = code => {
+    if (
+        !config('app.fallback') ||
+        config('app.locale') === config('app.fallback')
+    )
+        return code;
+
+    const fallback = collection.translations[config('app.fallback')];
 
     let value;
     try {
-        if (__fallback) value = eval(`__fallback.${code}`);
+        if (fallback) value = eval(`fallback.${code}`);
     } catch (err) {
         console.error(err);
     }
-    return value;
+    return value ?? code;
 };
 
 const translate = function (key) {
-    if (!variables.locale) throw 'locale not set';
+    if (!config('app.locale')) throw 'locale not set';
 
-    const __translation = variables.translations[variables.locale];
+    const translations = collection.translations[config('app.locale')];
 
-    if (!__translation) throw 'translation not set';
+    if (!translations) throw 'translation not set';
 
     if (typeof key !== 'string') throw 'invalid lang input';
     if (!key) throw 'language code empty!';
@@ -28,12 +32,12 @@ const translate = function (key) {
     let value;
 
     try {
-        value = eval(`__translation.${key}`);
+        value = eval(`translations.${key}`);
     } catch (err) {
         // console.error(err);
-        return translateFallback(key);
+        return fromFallback(key);
     }
-    return value ?? translateFallback(key);
+    return value ?? fromFallback(key);
 };
 
 export default function (code, attributes) {

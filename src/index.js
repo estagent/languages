@@ -1,17 +1,19 @@
-import config from './config';
-import variables from './variables';
+import collection from './collection';
 import translate from './translator';
 import {detectLang, setLocale, selectLocale} from './detector';
 import mergeTranslations from './loader';
 import locales from './lang/locales';
+import translations from './lang/translations';
 
-const langName = code => locales[variables.locale][code ?? variables.locale];
+const locale = () => config('app.locale');
+
+const langName = code => locales[locale()][code ?? locale()];
 
 const language = code => {
-    if (!code) code = variables.locale;
+    if (!code) code = locale();
     return {
         code: code,
-        name: locales[variables.locale][code],
+        name: locales[locale()][code],
         native: locales[code][code],
     };
 };
@@ -30,23 +32,31 @@ const registerGlobals = function (key) {
     return this;
 };
 
-export default function (opts) {
-    for (const key of Object.keys(config)) {
-        if (opts.hasOwnProperty(key)) config[key] = opts[key];
+export default function (opts = {}) {
+    if (opts.hasOwnProperty('locale')) {
+        if (opts.locale === 'detect') detectLang();
+        else setLocale(opts.locale);
     }
 
-    if (!setLocale(opts.locale))
-        if (!detectLang(opts.locale)) throw 'language not set!';
+    if (opts.hasOwnProperty('fallback'))
+        config({'app.fallback': opts.fallback});
 
-    if (opts.translations) variables.translations = opts.translations;
-    if (opts.siblings) variables.siblings = opts.siblings;
+    if (!locale()) throw 'language not set!';
 
-    mergeTranslations('languages', require('./lang/translations'));
+    if (opts.hasOwnProperty('default_priority'))
+        collection.default_priority = opts.default_priority;
+
+    if (opts.hasOwnProperty('translations'))
+        collection.translations = opts.translations;
+
+    if (opts.hasOwnProperty('siblings')) collection.siblings = opts.siblings;
+
+    mergeTranslations('languages', translations);
 
     registerGlobals(opts.global ?? '__');
 
     return {
-        locale: () => variables.locale,
+        locale: () => locale,
         setLocale: setLocale,
         selectLocale: selectLocale,
         language: language,
