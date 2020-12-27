@@ -56,7 +56,8 @@ export default function (opts = {}) {
 
     mergeTranslations('languages', translations);
 
-    if (opts.hasOwnProperty('global')) registerGlobals(opts.global ?? '__');
+    if (opts.hasOwnProperty('global') && opts.global)
+        registerGlobals(opts.global ?? '__');
 
     return {
         locale: () => locale,
