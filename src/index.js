@@ -27,6 +27,7 @@ const languages = codes => {
 };
 
 const registerGlobals = function (key) {
+    // noinspection JSValidateTypes
     window[key] = translate;
     window['mergeTranslations'] = mergeTranslations;
     return this;
@@ -47,7 +48,9 @@ export default function (opts = {}) {
         collection.default_priority = opts.default_priority;
 
     if (opts.hasOwnProperty('translations'))
-        collection.translations = opts.translations;
+        if (typeof opts.translations !== 'object')
+            throw 'translations root must be object! use {} for empty';
+        else collection.translations = opts.translations;
 
     if (opts.hasOwnProperty('siblings')) collection.siblings = opts.siblings;
 
