@@ -1,9 +1,11 @@
-import collection from './collection';
-import translate from './translator';
+import {config} from '@revgaming/config';
 import {detectLang, setLocale, selectLocale} from './detector';
 import mergeTranslations from './loader';
+import translate from './translator';
+import collection from './collection';
 import locales from './lang/locales';
 import translations from './lang/translations';
+
 
 export {translate, setLocale, selectLocale, mergeTranslations};
 export const locale = () => config('app.locale');
@@ -67,7 +69,7 @@ export const bootLanguages = opts => {
     globalizeLang(opts.lang_global ?? '__');
 
     return {
-        locale:  locale,
+        locale: locale,
         setLocale: setLocale,
         translate: translate,
     };
