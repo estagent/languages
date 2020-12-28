@@ -1,6 +1,6 @@
 {
   "name": "@revgaming/languages",
-  "version": "2.3.3",
+  "version": "2.3.5",
   "author": "estagent <estagent@gmail.com>",
   "description": "js language function and container like laravel translate helper",
   "keywords": [

@@ -63,15 +63,16 @@ export const detectLang = opts => {
         if (Array.isArray(opts.priorities)) {
             for (let locale of opts.priorities) {
                 if (langs.includes(locale))
-                    if (setLocale(config('app.locale'))) return true;
+                    if (setLocale(locale)) return true
             }
         }
     }
 
     for (let code of langs) {
+        const sibling = getSibling(code);
         if (setLocale(code)) {
             return true;
-        } else if (setLocale(getSibling(code))) {
+        } else if (setLocale(sibling)) {
             return true;
         } else console.log(`user ${code} not supported`);
     }
@@ -79,7 +80,7 @@ export const detectLang = opts => {
     console.log('any of supported language(s) is not detected');
 
     if (opts.hasOwnProperty('default_foreign'))
-        return setLocale(opts.default_foreign)
+        return setLocale(opts.default_foreign);
 
     // default locale will be used => env.APP_LOCALE already in config(app.locale)
     return false;
