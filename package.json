@@ -1,5 +1,6 @@
 {
   "name": "@revgaming/languages",
+  "version": "2.2.1",
   "author": "estagent <estagent@gmail.com>",
   "description": "js language function and container like laravel translate helper",
   "keywords": [
@@ -9,7 +10,6 @@
     "language",
     "I18n"
   ],
-  "version": "2.1.2",
   "homepage": "https://github.com/estagent/languages",
   "main": "src/index.js",
   "dependencies": {

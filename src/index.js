@@ -65,4 +65,10 @@ export const bootLanguages = opts => {
     mergeTranslations('languages', translations);
     window['mergeTranslations'] = mergeTranslations;
     globalizeLang(opts.lang_global ?? '__');
+
+    return {
+        locale:  locale,
+        setLocale: setLocale,
+        translate: translate,
+    };
 };
