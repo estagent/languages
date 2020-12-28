@@ -3,12 +3,12 @@ import collection from './collection';
 
 const fromFallback = code => {
     if (
-        !config('app.fallback') ||
-        config('app.locale') === config('app.fallback')
+        !config('app.fallback_locale') ||
+        config('app.locale') === config('app.fallback_locale')
     )
         return code;
 
-    const fallback = collection.translations[config('app.fallback')];
+    const fallback = collection.translations[config('app.fallback_locale')];
 
     let value;
     try {

@@ -26,12 +26,7 @@ const languages = codes => {
     return data;
 };
 
-const registerGlobals = function (key) {
-    // noinspection JSValidateTypes
-    window[key] = translate;
-    window['mergeTranslations'] = mergeTranslations;
-    return this;
-};
+
 
 export default function (opts = {}) {
     if (opts.hasOwnProperty('locale')) {
@@ -40,12 +35,18 @@ export default function (opts = {}) {
     }
 
     if (opts.hasOwnProperty('fallback'))
-        config({'app.fallback': opts.fallback});
+        config({'app.fallback_locale': opts.fallback});
 
     if (!locale()) throw 'language not set!';
 
     if (opts.hasOwnProperty('default_priority'))
-        collection.default_priority = opts.default_priority;
+        collection.default_priority = opts.default_priority === true;
+
+    if (opts.hasOwnProperty('fallback_priority'))
+        collection.fallback_priority = opts.fallback_priority === true;
+
+    if (opts.hasOwnProperty('unsupported'))
+        collection.unsupported_locale = opts.unsupported_locale;
 
     if (opts.hasOwnProperty('translations'))
         if (typeof opts.translations !== 'object')
@@ -56,8 +57,12 @@ export default function (opts = {}) {
 
     mergeTranslations('languages', translations);
 
-    if (opts.hasOwnProperty('global') && opts.global)
-        registerGlobals(opts.global ?? '__');
+    if (opts.hasOwnProperty('global')) {
+        if (typeof opts.global === 'string') window[opts.global] = translate;
+        else if (opts.global === true) window['__'] = translate;
+    }
+
+    window['mergeTranslations'] = mergeTranslations;
 
     return {
         locale: () => locale,

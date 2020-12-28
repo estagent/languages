@@ -56,14 +56,19 @@ export const selectLocale = code => {
 export const detectLang = () => {
     if (setLocale(Preference.get('language'))) return true;
 
-    const userLanguages = getUserLangCodes();
+    const langs = getUserLangCodes();
 
     if (collection.default_priority) {
-        if (userLanguages.includes(config('app.locale')))
+        if (langs.includes(config('app.locale')))
             if (setLocale(config('app.locale'))) return true;
     }
 
-    for (let code of userLanguages) {
+    if (collection.fallback_priority) {
+        if (langs.includes(config('app.fallback_locale')))
+            if (setLocale(config('app.fallback_locale'))) return true;
+    }
+
+    for (let code of langs) {
         if (setLocale(code)) {
             return true;
         } else if (setLocale(getSibling(code))) {
@@ -71,5 +76,10 @@ export const detectLang = () => {
         } else console.log(`user ${code} not supported`);
     }
 
-    console.log('no valid language detected');
+    console.log('any of supported language(s) is not detected');
+
+    if (collection.unsupported_locale)
+        return setLocale(collection.unsupported_locale);
+    // default locale will be used => env.APP_LOCALE already in config(app.locale)
+    return false;
 };
