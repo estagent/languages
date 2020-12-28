@@ -5,11 +5,10 @@ import mergeTranslations from './loader';
 import locales from './lang/locales';
 import translations from './lang/translations';
 
-const locale = () => config('app.locale');
-
-const langName = code => locales[locale()][code ?? locale()];
-
-const language = code => {
+export {translate, setLocale, selectLocale, mergeTranslations};
+export const locale = () => config('app.locale');
+export const langName = code => locales[locale()][code ?? locale()];
+export const language = code => {
     if (!code) code = locale();
     return {
         code: code,
@@ -17,7 +16,7 @@ const language = code => {
         native: locales[code][code],
     };
 };
-const languages = codes => {
+export const languages = codes => {
     if (!codes) codes = Object.keys(locales);
     if (!Array.isArray(codes))
         throw 'input must be array or *null*  for system codes';
@@ -25,19 +24,14 @@ const languages = codes => {
     for (let code of codes) data.push(language(code));
     return data;
 };
-
 const globalizeLang = key => {
-    window['mergeTranslations'] = mergeTranslations;
-    if (key !== false) {
-        if (typeof key !== 'string')
-            throw 'global function name must be string';
-        else if (window[key] === undefined)
-            throw `global ${key} for translate is already exists`;
-        else window[key] = translate;
-    }
+    if (key === false) return;
+    if (typeof key !== 'string') throw 'global function name must be string';
+    else if (window[key] === undefined)
+        throw `global ${key} for translate is already exists`;
+    else window[key] = translate;
 };
-
-export default function (opts = {}) {
+export const bootLanguages = opts => {
     if (opts.hasOwnProperty('locale')) {
         if (opts.locale === 'detect') detectLang();
         else setLocale(opts.locale);
@@ -69,16 +63,6 @@ export default function (opts = {}) {
     }
 
     mergeTranslations('languages', translations);
-    globalizeLang(opts.hasOwnProperty('lang_global') ? opts.lang_global : '__');
-
-    return {
-        locale: () => locale,
-        setLocale: setLocale,
-        selectLocale: selectLocale,
-        language: language,
-        languages: languages,
-        langName: langName,
-        translate: translate,
-        mergeTranslations: mergeTranslations,
-    };
-}
+    window['mergeTranslations'] = mergeTranslations;
+    globalizeLang(opts.lang_global ?? '__');
+};
