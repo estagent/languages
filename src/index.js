@@ -26,14 +26,25 @@ const languages = codes => {
     return data;
 };
 
+const globalizeLang = key => {
+    window['mergeTranslations'] = mergeTranslations;
+    if (key !== false) {
+        if (typeof key !== 'string')
+            throw 'global function name must be string';
+        else if (window[key] === undefined)
+            throw `global ${key} for translate is already exists`;
+        else window[key] = translate;
+    }
+};
+
 export default function (opts = {}) {
     if (opts.hasOwnProperty('locale')) {
         if (opts.locale === 'detect') detectLang();
         else setLocale(opts.locale);
     } else detectLang();
 
-    if (opts.hasOwnProperty('fallback'))
-        config({'app.fallback_locale': opts.fallback});
+    if (opts.hasOwnProperty('fallback_locale'))
+        config({'app.fallback_locale': opts.fallback_locale});
 
     if (!locale()) throw 'language not set!';
 
@@ -51,16 +62,14 @@ export default function (opts = {}) {
             throw 'translations root must be object! use {} for empty';
         else collection.translations = opts.translations;
 
-    if (opts.hasOwnProperty('siblings')) collection.siblings = opts.siblings;
-
-    mergeTranslations('languages', translations);
-
-    if (opts.hasOwnProperty('global')) {
-        if (typeof opts.global === 'string') window[opts.global] = translate;
-        else if (opts.global === true) window['__'] = translate;
+    if (opts.hasOwnProperty('locale_siblings')) {
+        if (typeof opts.locale_siblings !== 'object')
+            throw 'translations root must be object! use {} for empty';
+        collection.siblings = opts.locale_siblings;
     }
 
-    window['mergeTranslations'] = mergeTranslations;
+    mergeTranslations('languages', translations);
+    globalizeLang(opts.hasOwnProperty('lang_global') ? opts.lang_global : '__');
 
     return {
         locale: () => locale,
