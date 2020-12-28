@@ -29,7 +29,7 @@ export const languages = codes => {
 const globalizeLang = key => {
     if (key === false) return;
     if (typeof key !== 'string') throw 'global function name must be string';
-    else if (window[key] === undefined)
+    else if (window[key] !== undefined)
         throw `global ${key} for translate is already exists`;
     else window[key] = translate;
 };
@@ -60,8 +60,14 @@ export const bootLanguages = opts => {
 
     if (opts.hasOwnProperty('locale_siblings')) {
         if (typeof opts.locale_siblings !== 'object')
-            throw 'translations root must be object! use {} for empty';
+            throw 'locale_siblings must be object!';
         collection.siblings = opts.locale_siblings;
+    }
+
+    if (opts.hasOwnProperty('locale_alternatives')) {
+        if (typeof opts.alternatives !== 'object')
+            throw 'alternatives must be object!';
+        collection.alternatives = opts.locale_alternatives;
     }
 
     mergeTranslations('languages', translations);
