@@ -26,13 +26,11 @@ const languages = codes => {
     return data;
 };
 
-
-
 export default function (opts = {}) {
     if (opts.hasOwnProperty('locale')) {
         if (opts.locale === 'detect') detectLang();
         else setLocale(opts.locale);
-    }
+    } else detectLang();
 
     if (opts.hasOwnProperty('fallback'))
         config({'app.fallback_locale': opts.fallback});
@@ -45,7 +43,7 @@ export default function (opts = {}) {
     if (opts.hasOwnProperty('fallback_priority'))
         collection.fallback_priority = opts.fallback_priority === true;
 
-    if (opts.hasOwnProperty('unsupported'))
+    if (typeof opts.unsupported_locale == 'string')
         collection.unsupported_locale = opts.unsupported_locale;
 
     if (opts.hasOwnProperty('translations'))
