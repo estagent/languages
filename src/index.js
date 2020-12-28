@@ -6,7 +6,6 @@ import collection from './collection';
 import locales from './lang/locales';
 import translations from './lang/translations';
 
-
 export {translate, setLocale, selectLocale, mergeTranslations};
 export const locale = () => config('app.locale');
 export const langName = code => locales[locale()][code ?? locale()];
@@ -34,25 +33,6 @@ const globalizeLang = key => {
     else window[key] = translate;
 };
 export const bootLanguages = opts => {
-    if (opts.hasOwnProperty('locale')) {
-        if (opts.locale === 'detect') detectLang();
-        else setLocale(opts.locale);
-    } else detectLang();
-
-    if (opts.hasOwnProperty('fallback_locale'))
-        config({'app.fallback_locale': opts.fallback_locale});
-
-    if (!locale()) throw 'language not set!';
-
-    if (opts.hasOwnProperty('default_priority'))
-        collection.default_priority = opts.default_priority === true;
-
-    if (opts.hasOwnProperty('fallback_priority'))
-        collection.fallback_priority = opts.fallback_priority === true;
-
-    if (typeof opts.unsupported_locale == 'string')
-        collection.unsupported_locale = opts.unsupported_locale;
-
     if (opts.hasOwnProperty('translations'))
         if (typeof opts.translations !== 'object')
             throw 'translations root must be object! use {} for empty';
@@ -69,6 +49,12 @@ export const bootLanguages = opts => {
             throw 'alternatives must be object!';
         collection.alternatives = opts.locale_alternatives;
     }
+
+    if (opts.hasOwnProperty('locale')) {
+        if (opts.locale === 'detect') detectLang();
+        else if (typeof opts.locale === 'object') detectLang(opts.locale);
+        else setLocale(opts.locale);
+    } else detectLang();
 
     mergeTranslations('languages', translations);
     window['mergeTranslations'] = mergeTranslations;

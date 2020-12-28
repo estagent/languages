@@ -2,7 +2,7 @@ import navigatorLanguages from 'navigator-languages';
 import collection from './collection';
 import Preference from '@revgaming/preference';
 import locales from './lang/locales';
-import { config } from "@revgaming/config";
+import {config} from '@revgaming/config';
 
 const normalizeCode = code => {
     if (Object.keys(collection.alternatives).includes(code))
@@ -54,19 +54,18 @@ export const selectLocale = code => {
     throw `${code} not supported`;
 };
 
-export const detectLang = () => {
+export const detectLang = opts => {
     if (setLocale(Preference.get('language'))) return true;
 
     const langs = getUserLangCodes();
 
-    if (collection.default_priority) {
-        if (langs.includes(config('app.locale')))
-            if (setLocale(config('app.locale'))) return true;
-    }
-
-    if (collection.fallback_priority) {
-        if (langs.includes(config('app.fallback_locale')))
-            if (setLocale(config('app.fallback_locale'))) return true;
+    if (opts.hasOwnProperty('priorities')) {
+        if (Array.isArray(opts.priorities)) {
+            for (let locale of opts.priorities) {
+                if (langs.includes(locale))
+                    if (setLocale(config('app.locale'))) return true;
+            }
+        }
     }
 
     for (let code of langs) {
@@ -79,8 +78,9 @@ export const detectLang = () => {
 
     console.log('any of supported language(s) is not detected');
 
-    if (collection.unsupported_locale)
-        return setLocale(collection.unsupported_locale);
+    if (opts.hasOwnProperty('default_foreign'))
+        return setLocale(opts.default_foreign)
+
     // default locale will be used => env.APP_LOCALE already in config(app.locale)
     return false;
 };
