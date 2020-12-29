@@ -38,21 +38,16 @@ const getSibling = lang => {
 
 const isValid = code => code && Object.keys(locales).includes(code);
 
-export const setLocale = code => {
+export const setLocale = (code, preferred = false) => {
     if (isValid(code)) {
         config({'app.locale': code});
+        if (preferred) Preference.set('language', config('app.locale'));
         return true;
     }
     return false;
 };
 
-export const selectLocale = code => {
-    if (setLocale(code)) {
-        Preference.set('language', config('app.locale'));
-        return true;
-    }
-    throw `${code} not supported`;
-};
+
 
 export const detectLang = opts => {
     if (setLocale(Preference.get('language'))) return true;
@@ -62,8 +57,7 @@ export const detectLang = opts => {
     if (opts.hasOwnProperty('priorities')) {
         if (Array.isArray(opts.priorities)) {
             for (let locale of opts.priorities) {
-                if (langs.includes(locale))
-                    if (setLocale(locale)) return true
+                if (langs.includes(locale)) if (setLocale(locale)) return true;
             }
         }
     }

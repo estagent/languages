@@ -64,5 +64,8 @@ export const bootLanguages = opts => {
         locale: locale,
         setLocale: setLocale,
         translate: translate,
+        languages: languages,
+        langName: langName,
+        mergeTranslations:mergeTranslations,
     };
 };
