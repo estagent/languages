@@ -1,12 +1,12 @@
 import {config} from '@revgaming/config';
-import {detectLang, setLocale, selectLocale} from './detector';
+import {detectLang, setLocale} from './detector';
 import mergeTranslations from './loader';
 import translate from './translator';
 import collection from './collection';
 import locales from './lang/locales';
 import translations from './lang/translations';
 
-export {translate, setLocale, selectLocale, mergeTranslations};
+export {translate, setLocale, mergeTranslations};
 export const locale = () => config('app.locale');
 export const langName = code => locales[locale()][code ?? locale()];
 export const language = code => {
