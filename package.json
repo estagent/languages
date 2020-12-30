@@ -1,6 +1,6 @@
 {
   "name": "@revgaming/languages",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "author": "estagent <estagent@gmail.com>",
   "description": "js language function and container like laravel translate helper",
   "keywords": [
@@ -19,6 +19,6 @@
     "navigator-languages": "^2.0.2"
   },
   "devDependencies": {
-    "prettier": "^2.2.1"
+    "object-path": "^0.11.5"
   }
 }

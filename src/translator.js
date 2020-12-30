@@ -1,45 +1,31 @@
-import {replaceAttributes} from '@revgaming/helpers';
-import collection from './collection';
+import objectPath from 'object-path'
+import {replaceAttributes} from '@revgaming/helpers'
+import collection from './collection'
+import {config} from '@revgaming/config'
 
-const fromFallback = code => {
+const fromFallback = key => {
     if (
         !config('app.fallback_locale') ||
         config('app.locale') === config('app.fallback_locale')
     )
-        return code;
+        return key
 
-    const fallback = collection.translations[config('app.fallback_locale')];
-
-    let value;
-    try {
-        if (fallback) value = eval(`fallback.${code}`);
-    } catch (err) {
-        console.error(err);
-    }
-    return value ?? code;
-};
+    const fallback = collection.translations[config('app.fallback_locale')]
+    return objectPath.get(fallback, key, key)
+}
 
 const translate = function (key) {
-    if (!config('app.locale')) throw 'locale not set';
+    if (!config('app.locale')) throw 'locale not set'
 
-    const translations = collection.translations[config('app.locale')];
+    const translations = collection.translations[config('app.locale')]
+    if (!translations) throw 'translation not set'
 
-    if (!translations) throw 'translation not set';
+    if (typeof key !== 'string') throw 'invalid lang input'
+    if (!key) throw 'language code empty!'
 
-    if (typeof key !== 'string') throw 'invalid lang input';
-    if (!key) throw 'language code empty!';
+    return objectPath.get(translations, key, null) ?? fromFallback(key)
+}
 
-    let value;
-
-    try {
-        value = eval(`translations.${key}`);
-    } catch (err) {
-        // console.error(err);
-        return fromFallback(key);
-    }
-    return value ?? fromFallback(key);
-};
-
-export default function (code, attributes) {
-    return replaceAttributes(translate(code), attributes);
+export default function (key, attributes) {
+    return replaceAttributes(translate(key), attributes)
 }
