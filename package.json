@@ -1,6 +1,6 @@
 {
   "name": "@revgaming/languages",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "author": "estagent <estagent@gmail.com>",
   "description": "js language function and container like laravel translate helper",
   "keywords": [
@@ -14,8 +14,8 @@
   "main": "src/index.js",
   "dependencies": {
     "@revgaming/config": "^2.2.1",
-    "@revgaming/helpers": "^1.0.4",
-    "@revgaming/preference": "^1.0.1",
+    "@revgaming/helpers": "^1.0.5",
+    "@revgaming/preference": "^1.0.2",
     "navigator-languages": "^2.0.2"
   },
   "devDependencies": {

@@ -38,18 +38,6 @@ export const bootLanguages = opts => {
             throw 'translations root must be object! use {} for empty';
         else collection.translations = opts.translations;
 
-    if (opts.hasOwnProperty('locale_siblings')) {
-        if (typeof opts.locale_siblings !== 'object')
-            throw 'locale_siblings must be object!';
-        collection.siblings = opts.locale_siblings;
-    }
-
-    if (opts.hasOwnProperty('locale_alternatives')) {
-        if (typeof opts.alternatives !== 'object')
-            throw 'alternatives must be object!';
-        collection.alternatives = opts.locale_alternatives;
-    }
-
     if (opts.hasOwnProperty('locale')) {
         if (opts.locale === 'detect') detectLang();
         else if (typeof opts.locale === 'object') detectLang(opts.locale);

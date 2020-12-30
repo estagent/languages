@@ -30,12 +30,6 @@ const getUserLangCodes = () => {
     return userLanguages;
 };
 
-const getSibling = lang => {
-    if (collection.siblings)
-        if (collection.siblings.hasOwnProperty(lang))
-            return collection.siblings[lang];
-};
-
 const isValid = code => code && Object.keys(locales).includes(code);
 
 export const setLocale = (code, preferred = false) => {
@@ -47,9 +41,10 @@ export const setLocale = (code, preferred = false) => {
     return false;
 };
 
-
-
 export const detectLang = opts => {
+    const siblings = opts.siblings ?? collection.siblings;
+    if (opts.alternatives) collection.alternatives = opts.alternatives;
+
     if (setLocale(Preference.get('language'))) return true;
 
     const langs = getUserLangCodes();
@@ -63,10 +58,9 @@ export const detectLang = opts => {
     }
 
     for (let code of langs) {
-        const sibling = getSibling(code);
         if (setLocale(code)) {
             return true;
-        } else if (setLocale(sibling)) {
+        } else if (siblings[code] && setLocale(siblings[code])) {
             return true;
         } else console.log(`user ${code} not supported`);
     }
