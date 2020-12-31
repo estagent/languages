@@ -1,58 +1,21 @@
 import collection from './collection'
+import objectPath from 'object-path'
 
-const mergeLanguage = (lang, key, data) => {
-    if (!collection.translations) throw 'translations not set'
-
-    if (!lang) throw 'lang must be  provided'
-    if (typeof lang !== 'string') throw 'target must be object'
-
-    if (!key) throw 'key must be provided'
-    if (typeof key !== 'string') throw 'key must be string'
-
-    if (!data) throw 'data must be  provided'
-    if (typeof data !== 'object') throw 'data must be object'
-
-    const translations = collection.translations
-
-    if (!translations.hasOwnProperty(lang)) translations[lang] = {}
-
-    const target = translations[lang]
-
-    if (!target.hasOwnProperty(key)) target[key] = {}
-
-    const obj = target[key]
-    for (const subKey of Object.keys(data)) {
-        obj[subKey] = data[subKey]
-    }
+const setData = (lang, key, data) => {
+  if (!collection.translations.hasOwnProperty(lang))
+    collection.translations[lang] = {}
+  objectPath.set(collection.translations[lang], key, data)
 }
-
-const mergeTranslations = function (mixed, opts) {
-    {
-        if (typeof mixed === 'string') {
-            const {language, data} = opts
-            if (language) {
-                mergeLanguage(language, mixed, data)
-            } else {
-                for (const code of Object.keys(opts)) {
-                    mergeTranslations(mixed, {
-                        language: code,
-                        data: opts[code],
-                    })
-                }
-            }
-        } else if (typeof mixed == 'object') {
-            for (const key of Object.keys(mixed)) {
-                for (let code of Object.keys(mixed[key])) {
-                    mergeTranslations(key, {
-                        language: code,
-                        data: mixed[key][code],
-                    })
-                }
-            }
-        } else if (Array.isArray(mixed))
-            mixed.forEach(translations => mergeTranslations(translations))
-        else throw 'unsupported merge input for languages'
+const mergeTranslations = (mixed, opts) => {
+  if (typeof mixed === 'string') {
+    for (const lang of Object.keys(opts)) setData(lang, mixed, opts[lang])
+  } else if (mixed instanceof Array) {
+    mixed.forEach(translations => mergeTranslations(translations))
+  } else if (typeof mixed === 'object') {
+    for (const lang of Object.keys(mixed)) {
+      for (const key of Object.keys(mixed[lang]))
+        setData(lang, key, mixed[lang][key])
     }
+  } else throw 'unsupported merge input for languages' + typeof mixed
 }
-
 export default mergeTranslations
