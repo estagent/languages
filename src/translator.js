@@ -1,6 +1,5 @@
 import objectPath from 'object-path'
 import collection from './collection'
-import {replaceAttributes} from '@revgaming/helpers'
 import {config} from '@revgaming/config'
 
 const fromFallback = key => {
@@ -23,6 +22,18 @@ const translate = function (key) {
     fromFallback(key)
   )
 }
+
+const replaceAttributes = (string, attributes = []) => {
+  if (Object.keys(attributes).length === 0) return string
+  Object.keys(attributes).forEach(function (key) {
+    const re = new RegExp(':' + key, 'g')
+    if (!attributes[key]) return
+    string = string.replace(re, attributes[key])
+  })
+
+  return string
+}
+
 export default function (key, attributes) {
   return replaceAttributes(translate(key), attributes)
 }

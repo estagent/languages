@@ -1,5 +1,5 @@
-import collection from './collection'
 import objectPath from 'object-path'
+import collection from './collection'
 
 const setData = (lang, key, data) => {
   if (!collection.translations.hasOwnProperty(lang))

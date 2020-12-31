@@ -1,8 +1,9 @@
 import navigatorLanguages from 'navigator-languages'
-import collection from './collection'
 import Preference from '@revgaming/preference'
-import locales from './lang/locales'
 import {config} from '@revgaming/config'
+import locales from './lang/locales'
+import collection from './collection'
+
 
 const normalizeCode = code => {
   if (Object.keys(collection.alternatives).includes(code))
