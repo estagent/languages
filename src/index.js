@@ -5,7 +5,7 @@ import translate from './translator'
 import locales from './lang/locales'
 import translations from './lang/translations'
 
-export {translate, setLocale, mergeTranslations}
+export {translate, translate as __, setLocale, mergeTranslations}
 export const locale = () => config('app.locale')
 export const langName = code => locales[locale()][code ?? locale()]
 export const language = code => {
@@ -31,8 +31,6 @@ const globalizeLang = key => {
     throw `global ${key} for translate is already exists`
   else window[key] = translate
 }
-
-export const __ = translate
 
 export const bootLanguages = opts => {
   if (opts.hasOwnProperty('locale')) {

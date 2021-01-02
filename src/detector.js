@@ -4,7 +4,6 @@ import {config} from '@revgaming/config'
 import locales from './lang/locales'
 import collection from './collection'
 
-
 const normalizeCode = code => {
   if (Object.keys(collection.alternatives).includes(code))
     return collection.alternatives[code]
