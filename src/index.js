@@ -31,6 +31,9 @@ const globalizeLang = key => {
     throw `global ${key} for translate is already exists`
   else window[key] = translate
 }
+
+export const __ = translate
+
 export const bootLanguages = opts => {
   if (opts.hasOwnProperty('locale')) {
     if (opts.locale === 'detect') detectLang()
