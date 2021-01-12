@@ -34,6 +34,7 @@ export const setLocale = (code, preferred = false) => {
   if (isValid(code)) {
     config({'app.locale': code})
     if (preferred) Preference.set('language', config('app.locale'))
+    document.getElementsByTagName('html').setAttribute('lang', code)
     return true
   }
   return false
@@ -64,7 +65,6 @@ export const detectLang = (opts = {}) => {
 
   if (opts.hasOwnProperty('default_foreign'))
     return setLocale(opts.default_foreign)
-
   // default locale will be used => env.APP_LOCALE already in config(app.locale)
   return false
 }
