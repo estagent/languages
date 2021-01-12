@@ -34,7 +34,7 @@ export const setLocale = (code, preferred = false) => {
   if (isValid(code)) {
     config({'app.locale': code})
     if (preferred) Preference.set('language', config('app.locale'))
-    document.getElementsByTagName('html').setAttribute('lang', code)
+    document.querySelector('html').setAttribute('lang', code)
     return true
   }
   return false
